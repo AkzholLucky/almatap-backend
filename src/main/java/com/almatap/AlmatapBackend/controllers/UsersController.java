@@ -26,14 +26,4 @@ public class UsersController {
     public List<User> index(){
         return usersService.findAll();
     }
-
-    @PostMapping
-    public ResponseEntity<HttpStatus> userSave(@RequestBody @Valid User user, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            throw new RuntimeException();
-        }
-
-        usersService.userSave(user);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 }
