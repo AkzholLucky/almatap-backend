@@ -8,21 +8,27 @@
 <form th:action="@{/auth/registration}" th:method="POST" th:object="${user}">
     <label for="name">Name:</label>
     <input type="text" th:field="*{name}" id="name">
+    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>
     <br>
     <label for="surname">Surname:</label>
     <input type="text" th:field="*{surname}" id="surname">
+    <p style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname error</p>
     <br>
     <label for="birth">Year of birth:</label>
     <input type="text" th:field="*{yearOfBirth}" id="birth">
+    <p style="color: red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">yearOfBirth error</p>
     <br>
     <label for="email">Email:</label>
-    <input type="email" th:field="*{email}" id="email">
+    <input type="text" th:field="*{email}" id="email">
+    <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</p>
     <br>
     <label for="username">Username:</label>
     <input type="text" th:field="*{username}" id="username">
+    <p style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
     <br>
     <label for="password">Password:</label>
     <input type="password" th:field="*{password}" id="password">
+    <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</p>
     <br>
     <input type="submit" value="sign up">
 </form>

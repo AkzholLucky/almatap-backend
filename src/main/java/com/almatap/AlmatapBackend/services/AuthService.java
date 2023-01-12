@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -82,6 +83,14 @@ public class AuthService {
 
     public User findByCode(String code){
         return usersRepository.findByActivationCode(code);
+    }
+
+    public User findByEmail(String email){
+        return usersRepository.findByEmail(email);
+    }
+
+    public Optional<User> findByUsername(String username){
+        return usersRepository.findByUsername(username);
     }
 
     @Transactional
