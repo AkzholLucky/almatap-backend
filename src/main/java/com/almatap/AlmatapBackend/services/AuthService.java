@@ -30,6 +30,7 @@ public class AuthService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setEnabled(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("ROLE_USER");
 
         usersRepository.save(user);
 

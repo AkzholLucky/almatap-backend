@@ -53,4 +53,7 @@ public class User {
 
     @Column(name = "is_enabled")
     private boolean isEnabled;
+
+    @Column(name = "role")
+    private String role;
 }
