@@ -9,7 +9,12 @@ Name: <p th:text="${event.getName()}"></p>
 <br>
 Description: <p th:text="${event.getDescription()}"></p>
 <br>
-Created at: <p th:text="${event.getCreatedAt()}"></p>
+<div th:if="${event.getUpdatedAt()== null}">
+    Created at: <p th:text="${event.getCreatedAt()}"></p>
+</div>
+<div th:if="${event.getUpdatedAt() != null}">
+    Updated at: <p th:text="${event.getUpdatedAt()}"></p>
+</div>
 
 Picture:
 <div th:if="${!event.image.isEmpty()}">

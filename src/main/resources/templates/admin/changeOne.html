@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Page</title>
+    <title>Change event</title>
 </head>
 <body>
-<form th:action="@{/adminPage}" th:method="POST" enctype="multipart/form-data">
+<form th:action="@{/adminPage/change/{id}(id=${event.getId()})}" th:object="${event}" th:method="POST" enctype="multipart/form-data">
     <label for="name">Name:</label>
-    <input type="text" name="name" id="name">
-<!--    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>-->
+    <input type="text" name="name" id="name" th:field="*{name}">
+    <!--    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>-->
     <br>
     <label for="description">Description:</label>
     <input type="text" name="desc" id="description">
@@ -21,11 +21,7 @@
     <label for="file">File:</label>
     <input type="file" id="file" name="file">
     <br>
-    <input type="submit" value="Add event">
+    <input type="submit" value="Update">
 </form>
-
-<a th:href="@{/adminPage/change}">Change events</a>
-<br>
-<a th:href="@{/adminPage/delete}">Delete events</a>
 </body>
 </html>
