@@ -1,5 +1,6 @@
 package com.almatap.AlmatapBackend.security;
 
+import com.almatap.AlmatapBackend.dto.UserDTO;
 import com.almatap.AlmatapBackend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,5 +51,9 @@ public class UsersDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.user.isEnabled();
+    }
+
+    public User getUser(){
+        return this.user;
     }
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+Name:
+<p th:text="${user.getName()}">name</p>
+<br>
+Surname:
+<p th:text="${user.getSurname()}">surname</p>
+<br>
+Year of birth:
+<p th:text="${user.getYearOfBirth()}">year</p>
+<br>
+E-mail:
+<p th:text="${user.getEmail()}">email</p>
+<br>
+Username:
+<p th:text="${user.getUsername()}">username</p>
+<br>
+<hr>
+<br>
+<a href="">Change user info</a>
+<br>
+<a href="">Delete user</a>
+<br>
+<div th:if="${user.getRole().equals('ROLE_ADMIN')}">
+    <a th:href="@{/adminPage}">Admin page</a>
+</div>
+</body>
+</html>
