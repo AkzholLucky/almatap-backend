@@ -1,10 +1,8 @@
 package com.almatap.AlmatapBackend.controllers;
 
-import com.almatap.AlmatapBackend.dto.UserDTO;
 import com.almatap.AlmatapBackend.models.User;
 import com.almatap.AlmatapBackend.security.UsersDetails;
 import com.almatap.AlmatapBackend.services.UsersService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.Authentication;
@@ -18,27 +16,39 @@ import org.springframework.web.bind.annotation.*;
 public class UsersController {
 
     private final UsersService usersService;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public UsersController(UsersService usersService, ModelMapper modelMapper) {
+    public UsersController(UsersService usersService) {
         this.usersService = usersService;
-        this.modelMapper = modelMapper;
     }
 
-//    @GetMapping
-//    public List<UserDTO> index(){
-//        return usersService.findAll().stream().map(this::convertToUserDTO).collect(Collectors.toList());
-//    }
-    @GetMapping("/{id}")
+    @GetMapping()
     public String profile(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UsersDetails usersDetails = (UsersDetails) authentication.getPrincipal();
-        model.addAttribute("user", usersDetails.getUser());
+        model.addAttribute("user", currentUser());
         return "user/profile";
     }
 
-    public UserDTO convertToUserDTO(User user){
-        return modelMapper.map(user, UserDTO.class);
+    @GetMapping("/change")
+    public String changeProfile(Model model){
+        model.addAttribute("user", currentUser());
+        return "user/change";
+    }
+
+    @PostMapping("/change")
+    public String saveChanges(@ModelAttribute("user") User user){
+        usersService.saveChanges(user);
+        return "redirect:/users";
+    }
+
+    @PostMapping("/delete")
+    public String deleteUser(){
+        usersService.deleteUser(currentUser());
+        return "redirect:/auth/login";
+    }
+
+    private User currentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsersDetails usersDetails = (UsersDetails) authentication.getPrincipal();
+        return usersDetails.getUser();
     }
 }

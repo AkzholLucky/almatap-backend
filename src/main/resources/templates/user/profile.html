@@ -22,9 +22,11 @@ Username:
 <br>
 <hr>
 <br>
-<a href="">Change user info</a>
+<a th:href="@{/users/change}">Change user info</a>
 <br>
-<a href="">Delete user</a>
+<form th:action="@{/users/delete}" th:method="POST">
+    <input type="submit" value="delete!">
+</form>
 <br>
 <div th:if="${user.getRole().equals('ROLE_ADMIN')}">
     <a th:href="@{/adminPage}">Admin page</a>

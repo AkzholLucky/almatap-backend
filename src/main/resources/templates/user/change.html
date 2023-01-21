@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Change profile</title>
+</head>
+<body>
+<form th:action="@{/users/change}" th:method="POST" th:object="${user}">
+  <label for="name">Name:</label>
+  <input type="text" th:field="*{name}" id="name">
+  <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>
+  <br>
+  <label for="surname">Surname:</label>
+  <input type="text" th:field="*{surname}" id="surname">
+  <p style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">surname error</p>
+  <br>
+  <label for="birth">Year of birth:</label>
+  <input type="text" th:field="*{yearOfBirth}" id="birth">
+  <p style="color: red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">yearOfBirth error</p>
+  <br>
+  <input type="submit" value="save!">
+</form>
+</body>
+</html>
