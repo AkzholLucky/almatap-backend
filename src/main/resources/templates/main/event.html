@@ -20,5 +20,32 @@ Picture:
 <div th:if="${!event.image.isEmpty()}">
     <img alt="" th:src="*{'data:image/jpeg;base64,'+ event.image}" style="width: 100px;height: 100px;">
 </div>
+
+<br>
+
+average Rating:
+<p th:text="${averageRating}">average rating</p>
+
+<div th:if="${!isDid}">
+    <form th:action="@{/event/{id}(id=${event.getId()})}" th:method="POST">
+        <br>
+        <p><input type="radio" value="1" name="rating">1</p>
+        <br>
+        <p><input type="radio" value="2" name="rating">2</p>
+        <br>
+        <p><input type="radio" value="3" name="rating">3</p>
+        <br>
+        <p><input type="radio" value="4" name="rating">4</p>
+        <br>
+        <p><input type="radio" value="5" name="rating" checked>5</p>
+        <br>
+        <br>
+        <input type="submit" value="rate!">
+    </form>
+</div>
+
+<div th:if="${isDid}">
+    <p>You rated it!</p>
+</div>
 </body>
 </html>

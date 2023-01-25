@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -40,6 +41,9 @@ public class Event {
     @Lob
     @Column(name = "image",columnDefinition = "MEDIUMBLOB")
     private String image;
+
+    @OneToMany(mappedBy = "event")
+    private List<Rating> rating;
 
     @PrePersist
     private void createdAt(){
