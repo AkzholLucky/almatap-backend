@@ -84,6 +84,7 @@ public class AdminController {
     private List<String> getCategory(){
 
         category = new ArrayList<>();
+
         category.add("Parks");
         category.add("Shopping centre");
         category.add("Entertainment center");
