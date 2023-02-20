@@ -10,16 +10,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final RatingService ratingService;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, RatingService ratingService) {
         this.eventRepository = eventRepository;
+        this.ratingService = ratingService;
     }
 
     @Transactional
@@ -29,7 +30,13 @@ public class EventService {
     }
 
     public List<Event> findAllEvent() {
-        return eventRepository.findAll();
+        List<Event> allEvents = eventRepository.findAll();
+
+        for (Event event : allEvents){
+            double averageRating = ratingService.averageRating(event);
+            event.setAverageRating(averageRating);
+        }
+        return allEvents;
     }
 
     public Event findOne(int id) {
@@ -55,6 +62,7 @@ public class EventService {
         if (fileName.contains("..")) {
             System.out.println("not a valid file");
         }
+
         event.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
 
         event.setDescription(description);

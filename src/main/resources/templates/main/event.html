@@ -23,11 +23,9 @@ Picture:
 
 <br>
 
-average Rating:
-<p th:text="${averageRating}">average rating</p>
-
 <div th:if="${!isDid}">
     <form th:action="@{/event/{id}(id=${event.getId()})}" th:method="POST">
+        <input type="hidden" value="false" name="ratingAgain">
         <br>
         <p><input type="radio" value="1" name="rating">1</p>
         <br>
@@ -45,7 +43,27 @@ average Rating:
 </div>
 
 <div th:if="${isDid}">
-    <p>You rated it!</p>
+    <p style="color: red">You rated it!</p>
+
+    <form th:action="@{/event/{id}(id=${event.getId()})}" th:method="POST">
+        <input type="hidden" value="true" name="ratingAgain">
+        <br>
+        <p><input type="radio" value="1" name="rating">1</p>
+        <br>
+        <p><input type="radio" value="2" name="rating">2</p>
+        <br>
+        <p><input type="radio" value="3" name="rating">3</p>
+        <br>
+        <p><input type="radio" value="4" name="rating">4</p>
+        <br>
+        <p><input type="radio" value="5" name="rating" checked>5</p>
+        <br>
+        <br>
+        <input type="submit" value="rate!">
+    </form>
 </div>
+
+<hr>
+<a href="/mainPage">Main page!</a>
 </body>
 </html>

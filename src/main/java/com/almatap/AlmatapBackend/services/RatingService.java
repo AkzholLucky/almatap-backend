@@ -24,6 +24,14 @@ public class RatingService {
         ratingRepository.save(rating);
     }
 
+    @Transactional
+    public void saveUpdatedRating(Rating currentRating, Rating updatedRating){
+        currentRating.setRating(updatedRating.getRating());
+        currentRating.setEvent(updatedRating.getEvent());
+        currentRating.setUser(updatedRating.getUser());
+        currentRating.setDatePost(updatedRating.getDatePost());
+    }
+
     public boolean isDidRating(User user, Event event){
         List<Rating> ratingList = ratingRepository.findByUser(user);
 
@@ -42,6 +50,7 @@ public class RatingService {
     }
 
     public double averageRating(Event event){
+
         List<Rating> ratingList = ratingRepository.findByEvent(event);
         double averageRating = 0;
 
@@ -52,5 +61,9 @@ public class RatingService {
             return averageRating/ratingList.size();
         }
         return 5.0;
+    }
+
+    public Rating ratingByEventAndUser(Event event, User user){
+        return ratingRepository.findRatingByEventAndUser(event, user);
     }
 }

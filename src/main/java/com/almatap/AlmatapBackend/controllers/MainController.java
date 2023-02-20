@@ -39,24 +39,30 @@ public class MainController {
     public String event(@PathVariable("id") int id, Model model){
         Event event = eventService.findOne(id);
         boolean isDid = ratingService.isDidRating(currentUser(), event);
-        double averageRating = ratingService.averageRating(event);
 
         model.addAttribute("event", event);
         model.addAttribute("isDid", isDid);
-        model.addAttribute("averageRating", averageRating);
         return "main/event";
     }
 
     @PostMapping("/event/{id}")
-    public String rateEvent(@PathVariable int id, @RequestParam("rating") String rateStr){
+    public String rateEvent(@PathVariable int id,
+                            @RequestParam("rating") String rateStr,
+                            @RequestParam(required = false, value="ratingAgain") String ratingAgain){
         Rating rating = new Rating();
+        Event event = eventService.findOne(id);
 
         rating.setRating(Integer.parseInt(rateStr));
         rating.setDatePost(new Date());
-        rating.setEvent(eventService.findOne(id));
+        rating.setEvent(event);
         rating.setUser(currentUser());
 
-        ratingService.saveRating(rating);
+        if (ratingAgain.equals("true")){
+            Rating currentRating = ratingService.ratingByEventAndUser(event, currentUser());
+            ratingService.saveUpdatedRating(currentRating, rating);
+        } else {
+            ratingService.saveRating(rating);
+        }
 
         return "redirect:/event/" + id;
     }

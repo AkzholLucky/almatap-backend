@@ -45,6 +45,9 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<Rating> rating;
 
+    @Transient
+    private double averageRating;
+
     @PrePersist
     private void createdAt(){
         createdAt = new Date();

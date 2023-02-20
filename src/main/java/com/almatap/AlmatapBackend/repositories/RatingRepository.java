@@ -12,4 +12,5 @@ import java.util.List;
 public interface RatingRepository extends JpaRepository<Rating, Integer> {
     List<Rating> findByUser(User user);
     List<Rating> findByEvent(Event event);
+    Rating findRatingByEventAndUser(Event event, User user);
 }

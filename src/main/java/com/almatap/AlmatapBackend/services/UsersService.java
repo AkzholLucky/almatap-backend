@@ -36,9 +36,6 @@ public class UsersService {
         usersRepository.delete(user);
     }
 
-    public User findById(int id){
-        return usersRepository.findById(id).orElse(null);
-    }
 
     private User currentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
