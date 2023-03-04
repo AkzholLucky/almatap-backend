@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,8 +35,8 @@ public class AuthService {
 
         String message = String.format(
                 "Hello, %s! \n" +
-                        "Welcome to almatap. Please, visit next link: http://localhost:8080/auth/activate/%s",
-                user.getUsername(),
+                        "Welcome to almatap. Please, visit next link to activate your account: http://localhost:8080/auth/activate/%s",
+                user.getName(),
                 user.getActivationCode()
         );
 
@@ -62,7 +61,7 @@ public class AuthService {
 
     @Transactional
     public boolean isFound(String email){
-        User user = usersRepository.findByEmail(email);
+        User user = usersRepository.findByEmail(email).orElse(null);
 
         if (user == null){
             return false;
@@ -74,7 +73,7 @@ public class AuthService {
         String message = String.format(
                 "Hello, %s! \n" +
                         "To change your password, Please, visit next link: http://localhost:8080/auth/lost-password/%s",
-                user.getUsername(),
+                user.getName(),
                 user.getActivationCode()
         );
 
@@ -87,11 +86,7 @@ public class AuthService {
     }
 
     public User findByEmail(String email){
-        return usersRepository.findByEmail(email);
-    }
-
-    public Optional<User> findByUsername(String username){
-        return usersRepository.findByUsername(username);
+        return usersRepository.findByEmail(email).orElse(null);
     }
 
     @Transactional

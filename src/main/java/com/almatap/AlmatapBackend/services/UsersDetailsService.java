@@ -20,8 +20,9 @@ public class UsersDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = usersRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = usersRepository.findByEmail(email);
+
         if (user.isEmpty()){
             throw new UsernameNotFoundException("Incorrect username or password!");
         }

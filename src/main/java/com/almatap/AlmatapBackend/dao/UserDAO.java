@@ -12,8 +12,8 @@ public class UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void updateUser(User user, String activationCode){
-        jdbcTemplate.update("UPDATE users SET year_of_birth=?, activation_code=?, email=?, is_enabled=?, name=?, password=?, surname=?, username=? WHERE activation_code=?",
-                user.getYearOfBirth(), user.getActivationCode(), user.getEmail(), user.isEnabled(), user.getName(), user.getPassword(), user.getSurname(), user.getUsername(), activationCode);
-    }
+//    public void updateUser(User user, String activationCode){
+//        jdbcTemplate.update("UPDATE users SET year_of_birth=?, activation_code=?, email=?, is_enabled=?, name=?, password=?, surname=?, username=? WHERE activation_code=?",
+//                user.getYearOfBirth(), user.getActivationCode(), user.getEmail(), user.isEnabled(), user.getName(), user.getPassword(), user.getSurname(), user.getUsername(), activationCode);
+//    }
 }

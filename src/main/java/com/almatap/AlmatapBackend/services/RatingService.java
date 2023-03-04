@@ -54,7 +54,7 @@ public class RatingService {
         List<Rating> ratingList = ratingRepository.findByEvent(event);
         double averageRating = 0;
 
-        if (ratingList != null){
+        if (!ratingList.isEmpty()){
             for (Rating rating : ratingList){
                 averageRating = averageRating + rating.getRating();
             }

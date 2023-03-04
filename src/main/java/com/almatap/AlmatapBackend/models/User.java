@@ -44,10 +44,6 @@ public class User {
     @NotEmpty(message = "password should not be empty")
     private String password;
 
-    @Column(name = "username")
-    @NotEmpty(message = "username should not be empty")
-    private String username;
-
     @Column(name = "activation_code")
     private String activationCode;
 

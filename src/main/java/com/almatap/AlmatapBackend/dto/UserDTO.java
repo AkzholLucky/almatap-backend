@@ -29,7 +29,4 @@ public class UserDTO {
     @NotEmpty(message = "password should not be empty")
     @Size(min = 8, max = 16, message = "password should be more than 8 and less than 16")
     private String password;
-
-    @NotEmpty(message = "username should not be empty")
-    private String username;
 }
