@@ -53,6 +53,10 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    @Lob
+    @Column(name = "image",columnDefinition = "MEDIUMBLOB")
+    private String image;
+
     @OneToMany(mappedBy = "user")
     private List<Rating> rating;
 }

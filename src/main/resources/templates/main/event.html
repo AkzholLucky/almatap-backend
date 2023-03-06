@@ -16,8 +16,9 @@ Description: <p th:text="${event.getDescription()}"></p>
     Updated at: <p th:text="${event.getUpdatedAt()}"></p>
 </div>
 
-Picture:
+
 <div th:if="${!event.image.isEmpty()}">
+    Picture:
     <img alt="" th:src="*{'data:image/jpeg;base64,'+ event.image}" style="width: 100px;height: 100px;">
 </div>
 

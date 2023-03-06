@@ -1,6 +1,5 @@
 package com.almatap.AlmatapBackend.security;
 
-import com.almatap.AlmatapBackend.dto.UserDTO;
 import com.almatap.AlmatapBackend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

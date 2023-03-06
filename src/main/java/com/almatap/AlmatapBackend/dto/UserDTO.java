@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
 @Getter
@@ -29,4 +30,7 @@ public class UserDTO {
     @NotEmpty(message = "password should not be empty")
     @Size(min = 8, max = 16, message = "password should be more than 8 and less than 16")
     private String password;
+
+    @Lob
+    private String image;
 }

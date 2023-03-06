@@ -8,6 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Base64;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,9 +26,16 @@ public class UsersService {
     }
 
     @Transactional
-    public void saveChanges(User user){
+    public void saveChanges(User user, MultipartFile file) throws IOException {
         User changedUser = currentUser();
 
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        if (fileName.contains("..")) {
+            System.out.println("not a valid file");
+        }
+
+        changedUser.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
         changedUser.setName(user.getName());
         changedUser.setSurname(user.getSurname());
         changedUser.setYearOfBirth(user.getYearOfBirth());

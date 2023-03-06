@@ -10,6 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/users")
@@ -35,8 +38,8 @@ public class UsersController {
     }
 
     @PostMapping("/change")
-    public String saveChanges(@ModelAttribute("user") User user){
-        usersService.saveChanges(user);
+    public String saveChanges(@ModelAttribute("user") User user, @RequestParam("file") MultipartFile file) throws IOException {
+        usersService.saveChanges(user, file);
         return "redirect:/users";
     }
 
