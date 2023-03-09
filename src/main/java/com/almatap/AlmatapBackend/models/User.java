@@ -54,9 +54,9 @@ public class User {
     private String role;
 
     @Lob
-    @Column(name = "image",columnDefinition = "MEDIUMBLOB")
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")
     private String image;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> rating;
 }

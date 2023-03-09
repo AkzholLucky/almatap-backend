@@ -5,21 +5,35 @@
     <title>Admin Page</title>
 </head>
 <body>
-<form th:action="@{/adminPage}" th:method="POST" enctype="multipart/form-data">
+<form th:action="@{/adminPage}" th:method="POST" enctype="multipart/form-data" th:object="${event}">
     <label for="name">Name:</label>
-    <input type="text" name="name" id="name">
-<!--    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>-->
+    <input type="text" name="name" id="name" th:field="*{name}">
+    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>
     <br>
     <label for="description">Description:</label>
-    <input type="text" name="desc" id="description">
+    <input type="text" name="desc" id="description" th:field="*{description}">
+    <p style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">name error</p>
     <br>
     <label for="category">Select category:</label>
     <select name="category" id="category">
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
     </select>
     <br>
-    <label for="file">File:</label>
-    <input type="file" id="file" name="file">
+    <label for="file1">File 1:</label>
+    <input type="file" id="file1" name="file1">
+    <br>
+    <br>
+    <label for="file2">File 2:</label>
+    <input type="file" id="file2" name="file2">
+    <br>
+    <br>
+    <label for="file3">File 3:</label>
+    <input type="file" id="file3" name="file3">
+    <br>
+    <br>
+    <div th:if="${param.error}" style="color: red">
+        Incorrect information!
+    </div>
     <br>
     <input type="submit" value="Add event">
 </form>
@@ -27,5 +41,8 @@
 <a th:href="@{/adminPage/change}">Change events</a>
 <br>
 <a th:href="@{/adminPage/delete}">Delete events</a>
+<br>
+<hr>
+<a href="/mainPage">Main page!</a>
 </body>
 </html>

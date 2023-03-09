@@ -22,10 +22,6 @@
     <input type="text" th:field="*{email}" id="email">
     <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</p>
     <br>
-    <label for="username">Username:</label>
-    <input type="text" th:field="*{username}" id="username">
-    <p style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</p>
-    <br>
     <label for="password">Password:</label>
     <input type="password" th:field="*{password}" id="password">
     <p style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</p>

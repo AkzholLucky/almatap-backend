@@ -11,15 +11,21 @@
     <!--    <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>-->
     <br>
     <label for="description">Description:</label>
-    <input type="text" name="desc" id="description">
+    <input type="text" name="desc" id="description" th:field="*{description}">
     <br>
     <label for="category">Select category:</label>
     <select name="category" id="category">
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
     </select>
     <br>
-    <label for="file">File:</label>
-    <input type="file" id="file" name="file">
+    <label for="file1">File1:</label>
+    <input type="file" id="file1" name="file1">
+    <br>
+    <label for="file2">file2:</label>
+    <input type="file" id="file2" name="file2">
+    <br>
+    <label for="file3">file3:</label>
+    <input type="file" id="file3" name="file3">
     <br>
     <input type="submit" value="Update">
 </form>

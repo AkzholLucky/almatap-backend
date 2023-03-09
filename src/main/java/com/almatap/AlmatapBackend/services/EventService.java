@@ -1,14 +1,14 @@
 package com.almatap.AlmatapBackend.services;
 
 import com.almatap.AlmatapBackend.models.Event;
+import com.almatap.AlmatapBackend.models.Image;
 import com.almatap.AlmatapBackend.repositories.EventRepository;
+import com.almatap.AlmatapBackend.repositories.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -17,16 +17,17 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final RatingService ratingService;
+    private final ImageRepository imageRepository;
 
-    public EventService(EventRepository eventRepository, RatingService ratingService) {
+    public EventService(EventRepository eventRepository, RatingService ratingService, ImageRepository imageRepository) {
         this.eventRepository = eventRepository;
         this.ratingService = ratingService;
+        this.imageRepository = imageRepository;
     }
 
     @Transactional
-    public void addEvent(MultipartFile file, String name, String description, String category) throws IOException {
-        Event event = new Event();
-        eventInfo(file, name, description, category, event);
+    public void addEvent(Event event) {
+        eventRepository.save(event);
     }
 
     public List<Event> findAllEvent() {
@@ -44,33 +45,42 @@ public class EventService {
     }
 
     @Transactional
-    public void eventUpdate(MultipartFile file, String name, String description, String category, int id) throws IOException {
-        Event event = eventRepository.findById(id).orElse(null);
+    public void eventUpdate(MultipartFile file1, MultipartFile file2, MultipartFile file3, int id, Event event) throws IOException {
+        Event updatedEvent = eventRepository.findById(id).orElse(null);
+        assert updatedEvent != null;
 
-        eventInfo(file, name, description, category, event);
+        updatedEvent.setDescription(event.getDescription());
+        updatedEvent.setCategory(event.getCategory());
+        updatedEvent.setName(event.getName());
+
+        imageRepository.deleteByEventId(id);
+
+        if (file1.getSize() != 0){
+            Image image = new Image();
+            image.setImage(file1.getBytes());
+            image.setSize(file1.getSize());
+            updatedEvent.addImage(image);
+        }
+
+        if (file2.getSize() != 0){
+            Image image = new Image();
+            image.setImage(file2.getBytes());
+            image.setSize(file2.getSize());
+            updatedEvent.addImage(image);
+        }
+
+        if (file3.getSize() != 0){
+            Image image = new Image();
+            image.setImage(file3.getBytes());
+            image.setSize(file3.getSize());
+            updatedEvent.addImage(image);
+        }
+
+        eventRepository.save(updatedEvent);
     }
 
     @Transactional
     public void deleteEvent(int id){
         eventRepository.deleteById(id);
-    }
-
-    private void eventInfo(MultipartFile file, String name, String description, String category, Event event) throws IOException {
-
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-        if (fileName.contains("..")) {
-            System.out.println("not a valid file");
-        }
-
-        event.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
-
-        event.setDescription(description);
-
-        event.setName(name);
-
-        event.setCategory(category);
-
-        eventRepository.save(event);
     }
 }
