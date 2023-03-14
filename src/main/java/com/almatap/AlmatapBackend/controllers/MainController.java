@@ -69,6 +69,17 @@ public class MainController {
         return "redirect:/event/" + id;
     }
 
+    @GetMapping("/search")
+    public String searchPage(){
+        return "main/search";
+    }
+
+    @PostMapping("/search")
+    public String search(Model model, @RequestParam("name") String name){
+        model.addAttribute("events", eventService.findByNameStartsWith(name));
+        return "main/search";
+    }
+
     private User currentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UsersDetails usersDetails = (UsersDetails) authentication.getPrincipal();

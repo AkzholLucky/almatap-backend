@@ -79,6 +79,17 @@ public class EventService {
         eventRepository.save(updatedEvent);
     }
 
+    public List<Event> findByNameStartsWith(String name){
+        List<Event> allEvents = eventRepository.findByNameStartingWith(name);
+
+        for (Event event : allEvents){
+            double averageRating = ratingService.averageRating(event);
+            event.setAverageRating(averageRating);
+        }
+
+        return allEvents;
+    }
+
     @Transactional
     public void deleteEvent(int id){
         eventRepository.deleteById(id);
