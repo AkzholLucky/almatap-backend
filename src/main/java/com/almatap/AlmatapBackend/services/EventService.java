@@ -30,13 +30,17 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<Event> findAllEvent() {
-        List<Event> allEvents = eventRepository.findAll();
+    public List<Event> findAllWithRatingFilter(double rating, int min, int max) {
+        return findAllEvent()
+                .stream()
+                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max)
+                .toList();
+    }
 
-        for (Event event : allEvents){
-            double averageRating = ratingService.averageRating(event);
-            event.setAverageRating(averageRating);
-        }
+    public List<Event> findAllEvent(){
+        List<Event> allEvents = eventRepository.findAll();
+        allEvents.forEach(event -> event.setAverageRating(ratingService.averageRating(event)));
+
         return allEvents;
     }
 

@@ -30,9 +30,12 @@ public class MainController {
     }
 
     @GetMapping("/mainPage")
-    public String mainPage(Model model){
+    public String mainPage(Model model,
+                           @RequestParam(value = "rating", defaultValue = "0.0") double rating,
+                           @RequestParam(value = "min", defaultValue = "0") int min,
+                           @RequestParam(value = "max", defaultValue = "1000000") int max){
         model.addAttribute("user", currentUser());
-        model.addAttribute("events", eventService.findAllEvent());
+        model.addAttribute("events", eventService.findAllWithRatingFilter(rating, min, max));
         return "main/mainPage";
     }
 

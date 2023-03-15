@@ -34,6 +34,9 @@ public class Event {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "price")
+    private int price;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
