@@ -35,7 +35,7 @@ public class AuthService {
 
         String message = String.format(
                 "Hello, %s! \n" +
-                        "Welcome to almatap. Please, visit next link to activate your account: http://localhost:8080/auth/activate/%s",
+                        "Welcome to almatap. Please, visit next link to activate your account: https://almatap-backend.onrender.com/auth/activate/%s",
                 user.getName(),
                 user.getActivationCode()
         );
@@ -72,7 +72,7 @@ public class AuthService {
 
         String message = String.format(
                 "Hello, %s! \n" +
-                        "To change your password, Please, visit next link: http://localhost:8080/auth/lost-password/%s",
+                        "To change your password, Please, visit next link: https://almatap-backend.onrender.com/auth/lost-password/%s",
                 user.getName(),
                 user.getActivationCode()
         );
