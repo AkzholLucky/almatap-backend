@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**", "/error").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
-                .formLogin().loginPage("/auth/login")
+                .formLogin()
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/mainPage", true)
                 .failureUrl("/auth/login?error")
