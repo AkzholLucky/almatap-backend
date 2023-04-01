@@ -45,6 +45,7 @@ public class AuthController {
 
         userValidator.validate(userDTO, bindingResult);
 
+        System.out.println(bindingResult);
         if (bindingResult.hasErrors()){
             map.put("Message", "This email already exist!");
             return map;
