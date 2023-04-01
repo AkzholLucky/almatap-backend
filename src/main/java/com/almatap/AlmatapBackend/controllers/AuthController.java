@@ -27,10 +27,10 @@ public class AuthController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping("/login")
-    public Map<String, String> login(){
-        return Map.of("Message", "Login");
-    }
+//    @GetMapping("/login")
+//    public Map<String, String> login(){
+//        return Map.of("Message", "Login");
+//    }
 
     @GetMapping("/registration")
     public Map<String, String> registration(@ModelAttribute("user") UserDTO userDTO){
