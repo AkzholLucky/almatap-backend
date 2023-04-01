@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public Map<String, Object> doRegistration(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, Model model){
+    public Map<String, Object> doRegistration(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult){
 
         Map<String, Object> map = new HashMap<>();
 
