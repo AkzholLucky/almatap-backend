@@ -19,12 +19,8 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "size")
-    private Long size;
-
-    @Lob
     @Column(name = "image")
-    private byte[] image;
+    private String image;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id", referencedColumnName = "id")

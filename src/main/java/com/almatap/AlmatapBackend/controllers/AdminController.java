@@ -3,117 +3,126 @@ package com.almatap.AlmatapBackend.controllers;
 import com.almatap.AlmatapBackend.models.Event;
 import com.almatap.AlmatapBackend.models.Image;
 import com.almatap.AlmatapBackend.services.EventService;
-import com.almatap.AlmatapBackend.services.ImageService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/adminPage")
 public class AdminController {
     private final EventService eventService;
-    private final ImageService imageService;
     private List<String> category;
 
-    public AdminController(EventService eventService, ImageService imageService) {
+    public AdminController(EventService eventService) {
         this.eventService = eventService;
-        this.imageService = imageService;
     }
 
     @GetMapping()
-    public String adminPage(Model model, @ModelAttribute("event") Event event) {
+    public Map<String, Object> adminPage(@ModelAttribute("event") Event event) {
 
-        model.addAttribute("categories", getCategory());
-        return "admin/adminPage";
+        Map<String, Object> map = new HashMap<>();
+        map.put("categories", getCategory());
+        return map;
     }
 
     @PostMapping()
-    public String addEvent(@ModelAttribute("event") @Valid Event event,
-                           BindingResult bindingResult,
-                           @RequestParam("file1") MultipartFile file1,
-                           @RequestParam("file2") MultipartFile file2,
-                           @RequestParam("file3") MultipartFile file3) throws IOException {
+    public ResponseEntity<HttpStatus> addEvent(@ModelAttribute("event") @Valid Event event,
+                                               BindingResult bindingResult,
+                                               @RequestParam("file1") String file1,
+                                               @RequestParam("file2") String file2,
+                                               @RequestParam("file3") String file3) {
 
-        System.out.println("Binding: " + bindingResult);
+
         if (bindingResult.hasErrors()){
-            return "redirect:/adminPage?error";
+            return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
         }
 
-        if (file1.getSize() != 0){
-            Image image = new Image();
-            image.setImage(file1.getBytes());
-            image.setSize(file1.getSize());
-            event.addImage(image);
+        if (!file1.isEmpty()){
+
+            Image image1 = new Image();
+            image1.setImage(file1);
+            event.addImage(image1);
         }
 
-        if (file2.getSize() != 0){
-            Image image = new Image();
-            image.setImage(file2.getBytes());
-            image.setSize(file2.getSize());
-            event.addImage(image);
+        if (!file2.isEmpty()){
+
+            Image image2 = new Image();
+            image2.setImage(file2);
+            event.addImage(image2);
         }
 
-        if (file3.getSize() != 0){
-            Image image = new Image();
-            image.setImage(file3.getBytes());
-            image.setSize(file3.getSize());
-            event.addImage(image);
+        if (!file3.isEmpty()){
+
+            System.out.println(file3);
+            Image image3 = new Image();
+            image3.setImage(file3);
+            event.addImage(image3);
         }
+
+
+
         eventService.addEvent(event);
-        return "redirect:/mainPage";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //update
     @GetMapping("/change")
-    public String changeAllEvents(Model model) {
-        model.addAttribute("events", eventService.findAllEvent());
-        return "admin/changeAll";
+    public Map<String, Object> changeAllEvents() {
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("events", eventService.findAllEvent());
+        return map;
     }
 
     @GetMapping("/change/{id}")
-    public String changeEvent(Model model, @PathVariable int id) {
-        model.addAttribute("event", eventService.findOne(id));
-        model.addAttribute("categories", getCategory());
-        return "admin/changeOne";
+    public Map<String, Object> changeEvent(@PathVariable int id) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("event", eventService.findOne(id));
+        return map;
     }
 
     @PostMapping("/change/{id}")
-    public String saveChanges(@PathVariable int id,
+    public ResponseEntity<HttpStatus> saveChanges(@PathVariable int id,
                               @ModelAttribute("event") Event event,
-                              @RequestParam("file1") MultipartFile file1,
-                              @RequestParam("file2") MultipartFile file2,
-                              @RequestParam("file3") MultipartFile file3) throws IOException {
+                              @RequestParam("file1") String file1,
+                              @RequestParam("file2") String file2,
+                              @RequestParam("file3") String file3) throws IOException {
 
         eventService.eventUpdate(file1, file2, file3, id, event);
-        return "redirect:/mainPage";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     //delete
     @GetMapping("/delete")
-    public String deleteAllEvents(Model model) {
-        model.addAttribute("events", eventService.findAllEvent());
-        return "admin/deleteAll";
+    public Map<String, Object> deleteAllEvents() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("events", eventService.findAllEvent());
+        return map;
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteEvent(Model model, @PathVariable int id) {
+    public Map<String, Object> deleteEvent(@PathVariable int id) {
+        Map<String, Object> map = new HashMap<>();
         Event event = eventService.findOne(id);
-        model.addAttribute("event", event);
-        model.addAttribute("images", event.getImages());
-        return "admin/deleteOne";
+
+        map.put("event", event);
+        return map;
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteEventPost(@PathVariable int id) {
+    public ResponseEntity<HttpStatus> deleteEventPost(@PathVariable int id) {
         eventService.deleteEvent(id);
-        return "redirect:/mainPage";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     private List<String> getCategory(){

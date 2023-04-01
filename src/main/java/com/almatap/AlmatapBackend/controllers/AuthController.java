@@ -5,15 +5,17 @@ import com.almatap.AlmatapBackend.models.User;
 import com.almatap.AlmatapBackend.services.AuthService;
 import com.almatap.AlmatapBackend.util.UserValidator;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
-
-@Controller
+@RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
@@ -27,74 +29,89 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login(){
-        return "auth/login";
+    public Map<String, String> login(){
+        return Map.of("Message", "Login");
     }
 
     @GetMapping("/registration")
-    public String registration(@ModelAttribute("user") UserDTO userDTO){
-        return "auth/registration";
+    public Map<String, String> registration(@ModelAttribute("user") UserDTO userDTO){
+        return Map.of("Message", "Registration");
     }
 
     @PostMapping("/registration")
-    public String doRegistration(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, Model model){
+    public Map<String, Object> doRegistration(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult, Model model){
+
+        Map<String, Object> map = new HashMap<>();
 
         userValidator.validate(userDTO, bindingResult);
 
-        System.out.println("Binding: " + bindingResult);
         if (bindingResult.hasErrors()){
-            return "auth/registration";
+            map.put("Message", "This email already exist!");
+            return map;
         }
 
         authService.userSave(convertToUser(userDTO));
-        model.addAttribute("message", "check your email!");
-        return "auth/login";
+        map.put("Message", "Check your email!");
+        return map;
     }
 
     @GetMapping("/activate/{code}")
-    public String activate(Model model, @PathVariable String code) {
+    public Map<String, Object> activate(@PathVariable String code) {
         boolean isActivated = authService.activateUser(code);
+        Map<String, Object> map = new HashMap<>();
 
         if (isActivated) {
-            model.addAttribute("message", "User successfully activated");
+            map.put("Message", "User successfully activated");
         } else {
-            model.addAttribute("message", "Activation code is not found!");
+            map.put("Message", "Activation code is not found!");
         }
 
-        return "auth/login";
+        return map;
     }
 
     @GetMapping("/lost-password")
-    public String getEmail(@ModelAttribute("user") UserDTO userDTO){
-        return "auth/getEmail";
+    public ResponseEntity<HttpStatus> getEmail(@ModelAttribute("user") UserDTO userDTO){
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/lost-password")
-    public String afterGotEmail(@ModelAttribute("user") UserDTO userDTO, Model model){
-        boolean isFound = authService.isFound(convertToUser(userDTO).getEmail());
+    public Map<String, Object> afterGotEmail(String email){
+        boolean isFound = authService.isFound(email);
+        Map<String, Object> map = new HashMap<>();
+
         if(!isFound){
-            model.addAttribute("message", "User with this email not found!");
+            map.put("Message", "User with this email not found!");
         } else {
-            model.addAttribute("message", "Check your email");
+            map.put("Message", "Check your email");
         }
 
-        return "auth/getEmail";
+        return map;
     }
 
     @GetMapping("/lost-password/{code}")
-    public String lostPassword(Model model, @PathVariable String code){
-        model.addAttribute("user", authService.findByCode(code));
-        return "auth/lostPassword";
+    public Map<String, Object> lostPassword(@PathVariable String code){
+        Map<String, Object> map = new HashMap<>();
+        UserDTO userDTO = convertToUserDTO(authService.findByCode(code));
+        map.put("user", userDTO);
+        return map;
     }
 
     @PostMapping("/lost-password/{code}")
-    public String changePassword(@ModelAttribute("user") UserDTO userDTO, Model model, @PathVariable String code){
+    public Map<String, Object> changePassword(@ModelAttribute("user") UserDTO userDTO, @PathVariable String code){
+        System.out.println(convertToUser(userDTO));
+        System.out.println(userDTO);
         authService.changePassword(convertToUser(userDTO), code);
-        model.addAttribute("message", "password successfully changed");
-        return "auth/login";
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("Message", "password successfully changed");
+        return map;
     }
 
     private User convertToUser(UserDTO userDTO) {
         return modelMapper.map(userDTO, User.class);
+    }
+
+    private UserDTO convertToUserDTO(User user){
+        return modelMapper.map(user, UserDTO.class);
     }
 }

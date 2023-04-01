@@ -1,9 +1,6 @@
 package com.almatap.AlmatapBackend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.*;
@@ -12,6 +9,7 @@ import javax.validation.constraints.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserDTO {
     @NotEmpty(message = "Name should not be empty")
     private String name;

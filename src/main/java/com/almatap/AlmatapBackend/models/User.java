@@ -1,5 +1,6 @@
 package com.almatap.AlmatapBackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,9 +14,9 @@ import java.util.List;
 @Table(name = "Users")
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User {
     @Id
     @Column(name = "id")
@@ -57,6 +58,7 @@ public class User {
     @Column(name = "image", columnDefinition = "MEDIUMBLOB")
     private String image;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Rating> rating;
 }

@@ -5,7 +5,7 @@
     <title>Admin Page</title>
 </head>
 <body>
-<form th:action="@{/adminPage}" th:method="POST" enctype="multipart/form-data" th:object="${event}">
+<form th:action="@{/adminPage}" th:method="POST" th:object="${event}">
     <label for="name">Name:</label>
     <input type="text" name="name" id="name" th:field="*{name}">
     <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name error</p>
@@ -19,16 +19,16 @@
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
     </select>
     <br>
-    <label for="file1">File 1:</label>
-    <input type="file" id="file1" name="file1">
+    <label for="file1">Link 1:</label>
+    <input type="text" id="file1" name="file1">
     <br>
     <br>
-    <label for="file2">File 2:</label>
-    <input type="file" id="file2" name="file2">
+    <label for="file2">Link 2:</label>
+    <input type="text" id="file2" name="file2">
     <br>
     <br>
-    <label for="file3">File 3:</label>
-    <input type="file" id="file3" name="file3">
+    <label for="file3">Link 3:</label>
+    <input type="text" id="file3" name="file3">
     <br>
     <br>
     <div th:if="${param.error}" style="color: red">

@@ -31,6 +31,7 @@ public class EventService {
     }
 
     public List<Event> findAllWithRatingFilter(double rating, int min, int max) {
+
         return findAllEvent()
                 .stream()
                 .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max)
@@ -49,7 +50,7 @@ public class EventService {
     }
 
     @Transactional
-    public void eventUpdate(MultipartFile file1, MultipartFile file2, MultipartFile file3, int id, Event event) throws IOException {
+    public void eventUpdate(String file1, String file2, String file3, int id, Event event) throws IOException {
         Event updatedEvent = eventRepository.findById(id).orElse(null);
         assert updatedEvent != null;
 
@@ -59,25 +60,26 @@ public class EventService {
 
         imageRepository.deleteByEventId(id);
 
-        if (file1.getSize() != 0){
-            Image image = new Image();
-            image.setImage(file1.getBytes());
-            image.setSize(file1.getSize());
-            updatedEvent.addImage(image);
+        if (!file1.isEmpty()){
+
+            Image image1 = new Image();
+            image1.setImage(file1);
+            event.addImage(image1);
         }
 
-        if (file2.getSize() != 0){
-            Image image = new Image();
-            image.setImage(file2.getBytes());
-            image.setSize(file2.getSize());
-            updatedEvent.addImage(image);
+        if (!file2.isEmpty()){
+
+            Image image2 = new Image();
+            image2.setImage(file2);
+            event.addImage(image2);
         }
 
-        if (file3.getSize() != 0){
-            Image image = new Image();
-            image.setImage(file3.getBytes());
-            image.setSize(file3.getSize());
-            updatedEvent.addImage(image);
+        if (!file3.isEmpty()){
+
+            System.out.println(file3);
+            Image image3 = new Image();
+            image3.setImage(file3);
+            event.addImage(image3);
         }
 
         eventRepository.save(updatedEvent);
