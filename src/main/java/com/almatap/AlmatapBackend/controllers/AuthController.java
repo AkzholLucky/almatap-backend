@@ -7,7 +7,6 @@ import com.almatap.AlmatapBackend.util.UserValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public Map<String, Object> doRegistration(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult){
+    public Map<String, Object> doRegistration(@ModelAttribute("user") @Valid @RequestBody UserDTO userDTO, BindingResult bindingResult){
 
         Map<String, Object> map = new HashMap<>();
 
@@ -71,7 +70,7 @@ public class AuthController {
     }
 
     @GetMapping("/lost-password")
-    public ResponseEntity<HttpStatus> getEmail(@ModelAttribute("user") UserDTO userDTO){
+    public ResponseEntity<HttpStatus> getEmail(@ModelAttribute("user") @RequestBody UserDTO userDTO){
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -98,7 +97,7 @@ public class AuthController {
     }
 
     @PostMapping("/lost-password/{code}")
-    public Map<String, Object> changePassword(@ModelAttribute("user") UserDTO userDTO, @PathVariable String code){
+    public Map<String, Object> changePassword(@ModelAttribute("user") @RequestBody UserDTO userDTO, @PathVariable String code){
         System.out.println(convertToUser(userDTO));
         System.out.println(userDTO);
         authService.changePassword(convertToUser(userDTO), code);
