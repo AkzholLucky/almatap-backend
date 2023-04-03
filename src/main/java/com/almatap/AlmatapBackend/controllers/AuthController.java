@@ -1,12 +1,17 @@
 package com.almatap.AlmatapBackend.controllers;
 
+import com.almatap.AlmatapBackend.dto.AuthenticationDTO;
 import com.almatap.AlmatapBackend.dto.UserDTO;
 import com.almatap.AlmatapBackend.models.User;
+import com.almatap.AlmatapBackend.security.JWTUtil;
 import com.almatap.AlmatapBackend.services.AuthService;
 import com.almatap.AlmatapBackend.util.UserValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +25,15 @@ public class AuthController {
     private final AuthService authService;
     private final ModelMapper modelMapper;
     private final UserValidator userValidator;
+    private final JWTUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthController(AuthService authService, ModelMapper modelMapper, UserValidator userValidator) {
+    public AuthController(AuthService authService, ModelMapper modelMapper, UserValidator userValidator, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.authService = authService;
         this.modelMapper = modelMapper;
         this.userValidator = userValidator;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/login")
@@ -41,6 +50,7 @@ public class AuthController {
     public Map<String, Object> doRegistration(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult){
 
         Map<String, Object> map = new HashMap<>();
+        User user = convertToUser(userDTO);
 
         userValidator.validate(userDTO, bindingResult);
 
@@ -50,9 +60,10 @@ public class AuthController {
             return map;
         }
 
-        authService.userSave(convertToUser(userDTO));
+        authService.userSave(user);
         map.put("Message", "Check your email!");
-        return map;
+        String token = jwtUtil.generateToken(user.getEmail());
+        return Map.of("jwt-token", token);
     }
 
     @GetMapping("/activate/{code}")
@@ -67,6 +78,24 @@ public class AuthController {
         }
 
         return map;
+    }
+
+    @PostMapping("/login")
+    public Map<String, String> performLogin(@RequestBody AuthenticationDTO authenticationDTO) {
+        UsernamePasswordAuthenticationToken authInputToken =
+                new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(),
+                        authenticationDTO.getPassword());
+
+        System.out.println(authenticationDTO);
+
+        try {
+            authenticationManager.authenticate(authInputToken);
+        } catch (BadCredentialsException e) {
+            return Map.of("message", "Incorrect credentials!");
+        }
+
+        String token = jwtUtil.generateToken(authenticationDTO.getUsername());
+        return Map.of("jwt-token", token);
     }
 
     @GetMapping("/lost-password")
