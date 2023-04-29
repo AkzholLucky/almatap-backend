@@ -51,6 +51,12 @@ public class Event {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "lat")
+    private String lat;
+
+    @Column(name = "long")
+    private String longM;
+
     @JsonIgnore
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Rating> rating;
@@ -58,6 +64,10 @@ public class Event {
     @JsonIgnore
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Favorite> favorites = new ArrayList<>();
 
     @Transient
     private double averageRating;

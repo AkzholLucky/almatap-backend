@@ -3,6 +3,7 @@ package com.almatap.AlmatapBackend.controllers;
 import com.almatap.AlmatapBackend.models.Event;
 import com.almatap.AlmatapBackend.models.Image;
 import com.almatap.AlmatapBackend.services.EventService;
+import com.almatap.AlmatapBackend.services.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,10 +20,14 @@ import java.util.Map;
 @RequestMapping("/adminPage")
 public class AdminController {
     private final EventService eventService;
+    private final UsersService usersService;
     private List<String> category;
 
-    public AdminController(EventService eventService) {
+    public static List<String> notifications = new ArrayList<>();
+
+    public AdminController(EventService eventService, UsersService usersService) {
         this.eventService = eventService;
+        this.usersService = usersService;
     }
 
     @GetMapping()
@@ -61,15 +66,21 @@ public class AdminController {
 
         if (!file3.isEmpty()){
 
-            System.out.println(file3);
             Image image3 = new Image();
             image3.setImage(file3);
             event.addImage(image3);
         }
 
-
-
+        usersService.getAll();
         eventService.addEvent(event);
+
+        Event event1 = eventService.findEventByName(event.getName());
+
+        String notification = String.format(
+                "Welcome to almatap. Please, visit next link to activate your account: https://almatap-backend.onrender.com/event/%s",
+                event1.getId()
+        );
+        notifications.add(notification);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -96,7 +107,7 @@ public class AdminController {
                               @ModelAttribute("event") Event event,
                               @RequestParam("file1") String file1,
                               @RequestParam("file2") String file2,
-                              @RequestParam("file3") String file3) throws IOException {
+                              @RequestParam("file3") String file3) {
 
         eventService.eventUpdate(file1, file2, file3, id, event);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -136,4 +147,15 @@ public class AdminController {
 
         return category;
     }
+
+//    private Event addImageToEvent(String file, Event event){
+//        if (!file.isEmpty()){
+//
+//            Image image1 = new Image();
+//            image1.setImage(file);
+//            event.addImage(image1);
+//            return event;
+//        }
+//
+//    }
 }

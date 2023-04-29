@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,6 +40,10 @@ public class UsersService {
     @Transactional
     public void deleteUser(User user){
         usersRepository.delete(user);
+    }
+
+    public List<User> getAll(){
+        return usersRepository.findAll();
     }
 
     private User currentUser(){
