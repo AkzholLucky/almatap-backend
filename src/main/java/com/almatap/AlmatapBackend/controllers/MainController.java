@@ -57,7 +57,7 @@ public class MainController {
         return Map.of("Message", "Successfully subscribe!");
     }
 
-    @PostMapping
+    @PostMapping("/appRating")
     public Map<String, String> appRating(@RequestParam("rating") String rateStr){
         AppRating appRating = new AppRating();
 
