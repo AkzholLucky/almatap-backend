@@ -55,6 +55,7 @@ public class AuthController {
         userValidator.validate(userDTO, bindingResult);
 
         System.out.println(bindingResult);
+
         if (bindingResult.hasErrors()){
             map.put("Message", "This email already exist!");
             return map;
@@ -63,7 +64,7 @@ public class AuthController {
         authService.userSave(user);
         map.put("Message", "Check your email!");
         String token = jwtUtil.generateToken(user.getEmail());
-        return Map.of("jwt-token", token);
+        return Map.of("token", token);
     }
 
     @GetMapping("/activate/{code}")
