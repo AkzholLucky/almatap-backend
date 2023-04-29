@@ -106,6 +106,7 @@ public class AuthController {
 
     @PostMapping("/lost-password")
     public Map<String, Object> afterGotEmail(String email){
+        System.out.println(email);
         boolean isFound = authService.isFound(email);
         Map<String, Object> map = new HashMap<>();
 
@@ -130,7 +131,7 @@ public class AuthController {
     public Map<String, Object> changePassword(@ModelAttribute("user") UserDTO userDTO, @PathVariable String code){
         System.out.println(convertToUser(userDTO));
         System.out.println(userDTO);
-        authService.changePassword(convertToUser(userDTO), code);
+//        authService.changePassword(convertToUser(userDTO), code);
         Map<String, Object> map = new HashMap<>();
 
         map.put("Message", "password successfully changed");

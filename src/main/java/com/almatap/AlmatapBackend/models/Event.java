@@ -22,6 +22,9 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "address")
+    private String address;
+
     @NotEmpty(message = "Name should be not empty")
     @Column(name = "name")
     private String name;
@@ -45,8 +48,7 @@ public class Event {
     private Date updatedAt;
 
     @Column(name = "expire_at")
-    @Temporal(TemporalType.DATE)
-    private Date expireAt;
+    private String expireAt;
 
     @Column(name = "city")
     private String city;

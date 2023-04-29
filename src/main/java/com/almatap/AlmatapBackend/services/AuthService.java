@@ -67,17 +67,20 @@ public class AuthService {
             return false;
         }
 
-        user.setActivationCode(UUID.randomUUID().toString());
-        usersRepository.save(user);
+        String password = user.getName() + "123";
+
+//        user.setActivationCode(UUID.randomUUID().toString());
+//        usersRepository.save(user);
 
         String message = String.format(
                 "Hello, %s! \n" +
-                        "To change your password, Please, visit next link: https://almatap-backend.onrender.com/auth/lost-password/%s",
+                        "Your new password - %s",
                 user.getName(),
-                user.getActivationCode()
+                password
         );
 
-        mailSenderService.send(user.getEmail(), "To change your password", message);
+        changePassword(user, user.getEmail(), password);
+        mailSenderService.send(user.getEmail(), "New Password", message);
         return true;
     }
 
@@ -90,11 +93,11 @@ public class AuthService {
     }
 
     @Transactional
-    public void changePassword(User user, String code){
-        User passwordChangedUser = findByCode(code);
+    public void changePassword(User user, String code, String password){
+        User passwordChangedUser = findByEmail(code);
 
-        passwordChangedUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        passwordChangedUser.setActivationCode(null);
+        passwordChangedUser.setPassword(passwordEncoder.encode(password));
+//        passwordChangedUser.setActivationCode(null);
 
         usersRepository.save(passwordChangedUser);
     }
