@@ -96,7 +96,7 @@ public class AuthController {
         }
 
         String token = jwtUtil.generateToken(authenticationDTO.getUsername());
-        return Map.of("jwt-token", token);
+        return Map.of("token", token);
     }
 
     @GetMapping("/lost-password")
