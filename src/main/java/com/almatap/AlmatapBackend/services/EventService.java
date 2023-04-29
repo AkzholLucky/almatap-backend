@@ -124,7 +124,6 @@ public class EventService {
 
         } else {
             Favorite newFavorite = new Favorite();
-            newFavorite.setTime(LocalDateTime.now());
             newFavorite.setUser(user);
             newFavorite.setEvent(event);
             favoriteRepository.save(newFavorite);

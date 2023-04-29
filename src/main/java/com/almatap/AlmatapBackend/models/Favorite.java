@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,7 +22,7 @@ public class Favorite {
 
     @Column(name = "time")
     @Temporal(TemporalType.DATE)
-    private LocalDateTime time;
+    private Date time;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -32,4 +31,9 @@ public class Favorite {
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
+
+    @PrePersist
+    private void createdAt(){
+        time = new Date();
+    }
 }
