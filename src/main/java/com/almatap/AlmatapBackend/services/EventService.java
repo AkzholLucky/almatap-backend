@@ -44,7 +44,7 @@ public class EventService {
         return city.equals("default") ?
                 findAllEvent()
                 .stream()
-                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max).toList()
+                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max && event.getCategory().equals(category)).toList()
                 :
                 findAllEvent()
                 .stream()
