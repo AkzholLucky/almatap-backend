@@ -41,7 +41,8 @@ public class UsersController {
     }
 
     @PostMapping("/change")
-    public ResponseEntity<HttpStatus> saveChanges(@ModelAttribute("user") User user, @RequestParam("image") MultipartFile file) throws IOException {
+    public ResponseEntity<HttpStatus> saveChanges(@ModelAttribute("user") User user,
+                                                  @RequestParam("image") MultipartFile file) throws IOException {
         usersService.saveChanges(user, file);
         return ResponseEntity.ok(HttpStatus.OK);
     }

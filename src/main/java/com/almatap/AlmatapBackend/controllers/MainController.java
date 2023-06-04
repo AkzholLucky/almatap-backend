@@ -45,11 +45,6 @@ public class MainController {
         return eventService.findAllWithRatingFilter(rating, min, max, city);
     }
 
-    @PostMapping("/mainPage")
-    public void favorite(){
-
-    }
-
     @PostMapping("/subscribe")
     public Map<String, String> subscription(@RequestParam(value = "email") String email){
 

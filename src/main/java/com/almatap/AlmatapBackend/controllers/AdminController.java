@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +76,7 @@ public class AdminController {
         Event event1 = eventService.findEventByName(event.getName());
 
         String notification = String.format(
-                "Welcome to almatap. Please, visit next link to activate your account: https://almatap-backend.onrender.com/event/%s",
+                "New event in site, visit next link for view: https://almatap-backend.onrender.com/event/%s",
                 event1.getId()
         );
         notifications.add(notification);
