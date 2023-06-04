@@ -38,7 +38,7 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public List<Event> findAllWithRatingFilter(double rating, int min, int max, String city) {
+    public List<Event> findAllWithRatingFilter(double rating, int min, int max, String city, String category) {
 
 //        return
         return city.equals("default") ?
@@ -48,7 +48,7 @@ public class EventService {
                 :
                 findAllEvent()
                 .stream()
-                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max && event.getCity().equals(city))
+                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max && event.getCity().equals(city) && event.getCategory().equals(category))
                 .toList();
     }
 
