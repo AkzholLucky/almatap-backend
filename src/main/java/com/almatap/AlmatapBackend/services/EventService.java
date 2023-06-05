@@ -41,10 +41,10 @@ public class EventService {
     public List<Event> findAllWithRatingFilter(double rating, int min, int max, String city, String category) {
 
 //        return
-        return city.equals("default") ?
+        return category.equals("all") ?
                 findAllEvent()
                 .stream()
-                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max && event.getCategory().equals(category)).toList()
+                .filter(event -> event.getAverageRating() >= rating && event.getPrice() >= min && event.getPrice() <= max && event.getCity().equals(city)).toList()
                 :
                 findAllEvent()
                 .stream()

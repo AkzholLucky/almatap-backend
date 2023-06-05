@@ -37,7 +37,7 @@ public class MainController {
                                 @RequestParam(value = "max", defaultValue = "1000000") int max,
                                 @RequestParam(value = "city", defaultValue = "default") String city,
                                 @RequestParam(value = "eventId", defaultValue = "0") int eventId,
-                                @RequestParam(value = "category", defaultValue = "not") String category){
+                                @RequestParam(value = "category", defaultValue = "all") String category){
 
         if (eventId != 0){
             eventService.addOrDeleteFavorites(currentUser(), eventService.findOne(eventId));
