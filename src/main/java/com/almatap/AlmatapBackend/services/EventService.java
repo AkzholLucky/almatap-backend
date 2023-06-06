@@ -60,7 +60,9 @@ public class EventService {
     }
 
     public Event findOne(int id) {
-        return eventRepository.findById(id).orElse(null);
+        Event event = eventRepository.findById(id).orElse(null);
+        event.setAverageRating(ratingService.averageRating(event));
+        return event;
     }
 
     public Event findEventByName(String name){

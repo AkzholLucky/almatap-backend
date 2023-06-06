@@ -63,6 +63,19 @@ public class RatingService {
         return 5.0;
     }
 
+//    public double findAverageRatingByEvent(int id){
+//        List<Rating> ratingList = ratingRepository.findByEvent(event);
+//        double averageRating = 0;
+//
+//        if (!ratingList.isEmpty()){
+//            for (Rating rating : ratingList){
+//                averageRating = averageRating + rating.getRating();
+//            }
+//            return averageRating/ratingList.size();
+//        }
+//        return 5.0;
+//    }
+
     public Rating ratingByEventAndUser(Event event, User user){
         return ratingRepository.findRatingByEventAndUser(event, user);
     }
