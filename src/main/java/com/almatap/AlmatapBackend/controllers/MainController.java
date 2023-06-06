@@ -49,11 +49,7 @@ public class MainController {
     @PostMapping("/subscribe")
     public Map<String, String> subscription(@RequestParam(value = "email") String email){
 
-        String message = String.format(
-                "Hello, %s! \n" +
-                        "You subscribe to our news! Then wait Digests from us!",
-                currentUser().getName()
-        );
+        String message = "You subscribe to our news! Then wait Digests from us!";
 
         mailSenderService.send(email, "You Successfully subscribe", message);
         return Map.of("Message", "Successfully subscribe!");
